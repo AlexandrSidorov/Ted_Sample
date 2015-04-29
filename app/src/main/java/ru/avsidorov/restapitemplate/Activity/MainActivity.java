@@ -35,7 +35,7 @@ import ru.avsidorov.restapitemplate.R;
 import ru.avsidorov.restapitemplate.Utils;
 
 public class MainActivity extends AbstractActivity implements Constants {
-    private ArrayList<Talks_> sTalkList;
+    private ArrayList<Talks_> mTalkList;
     private TalksAdapter mTalksAdapter;
     private ListView mTalksListView;
     private SwipyRefreshLayout swipeRefreshLayout;
@@ -50,7 +50,7 @@ public class MainActivity extends AbstractActivity implements Constants {
         this.registerReceiver(this.mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         initUI();
         if (savedInstanceState != null) {
-            sTalkList = (ArrayList<Talks_>) savedInstanceState.getSerializable("put");
+            mTalkList = (ArrayList<Talks_>) savedInstanceState.getSerializable("put");
             mProgressBarCircularIndeterminate.setVisibility(View.INVISIBLE);
         }
         setListView();
@@ -67,14 +67,10 @@ public class MainActivity extends AbstractActivity implements Constants {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("put", sTalkList);
+        outState.putSerializable("put", mTalkList);
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
 
-    }
 
     /**
      * Prepare UI for work.
@@ -93,8 +89,8 @@ public class MainActivity extends AbstractActivity implements Constants {
         });
 
 
-        if (sTalkList == null) {
-            sTalkList = new ArrayList<Talks_>();
+        if (mTalkList == null) {
+            mTalkList = new ArrayList<Talks_>();
             mProgressBarCircularIndeterminate.setVisibility(View.VISIBLE);
             getTEDList(Utils.getQuery(20, 0));
 
@@ -103,7 +99,7 @@ public class MainActivity extends AbstractActivity implements Constants {
             mTalksAdapter.notifyDataSetChanged();
 
         } else {
-            mTalksAdapter = new TalksAdapter(this, R.layout.talks_item, sTalkList);
+            mTalksAdapter = new TalksAdapter(this, R.layout.talks_item, mTalkList);
             mTalksListView.setAdapter(mTalksAdapter);
             mTalksAdapter.notifyDataSetChanged();
         }
@@ -194,7 +190,7 @@ public class MainActivity extends AbstractActivity implements Constants {
 
     private void updateList(ResponseTalks responseTalks) {
         for (int i = 0; i < responseTalks.getTalks().size(); i++) {
-            sTalkList.add(responseTalks.getTalks().get(i).getTalk());
+            mTalkList.add(responseTalks.getTalks().get(i).getTalk());
         }
 
         mTalksAdapter.notifyDataSetChanged();
@@ -222,14 +218,8 @@ public class MainActivity extends AbstractActivity implements Constants {
    // Class from http://stackoverflow.com/
     private BroadcastReceiver mConnReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            boolean noConnectivity = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-            String reason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
-            boolean isFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
-
-            NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-            NetworkInfo otherNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
-
-            if(!currentNetworkInfo.isConnected()){
+             NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+                if(!currentNetworkInfo.isConnected()){
                 showConnectionIsFailed();
             }
         }
