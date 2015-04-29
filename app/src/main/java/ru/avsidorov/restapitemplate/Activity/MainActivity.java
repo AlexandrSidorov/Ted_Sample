@@ -38,7 +38,7 @@ public class MainActivity extends AbstractActivity implements Constants {
     private ArrayList<Talks_> mTalkList;
     private TalksAdapter mTalksAdapter;
     private ListView mTalksListView;
-    private SwipyRefreshLayout swipeRefreshLayout;
+    private SwipyRefreshLayout mSwipyRefreshLayout;
     private Toolbar mToolbar;
     ProgressBarCircularIndeterminate mProgressBarCircularIndeterminate;
 
@@ -59,7 +59,7 @@ public class MainActivity extends AbstractActivity implements Constants {
     private void initUI() {
         mProgressBarCircularIndeterminate = (ProgressBarCircularIndeterminate) findViewById(R.id.progressBarInt);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        swipeRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipe);
+        mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipe);
         mTalksListView = (ListView) findViewById(R.id.talksListView);
         setSupportActionBar(mToolbar);
     }
@@ -78,7 +78,7 @@ public class MainActivity extends AbstractActivity implements Constants {
     private void setListView() {
 
         checkConnection();
-        swipeRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
+        mSwipyRefreshLayout.setOnRefreshListener(new SwipyRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh(SwipyRefreshLayoutDirection swipyRefreshLayoutDirection) {
 
@@ -207,7 +207,7 @@ public class MainActivity extends AbstractActivity implements Constants {
         @Override
         public void onRequestSuccess(ResponseTalks responseTalks) {
             updateList(responseTalks);
-            swipeRefreshLayout.setRefreshing(false);
+            mSwipyRefreshLayout.setRefreshing(false);
             if (mTalksAdapter.getCount() > 20) {
                 mTalksListView.smoothScrollByOffset(3);
             } else {
