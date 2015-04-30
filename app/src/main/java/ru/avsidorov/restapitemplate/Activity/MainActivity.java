@@ -35,13 +35,39 @@ import ru.avsidorov.restapitemplate.R;
 import ru.avsidorov.restapitemplate.Utils;
 
 public class MainActivity extends AbstractActivity implements Constants {
+    ProgressBarCircularIndeterminate mProgressBarCircularIndeterminate;
+    RequestListener<ResponseTalks> mRequestListener = new RequestListener<ResponseTalks>() {
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            mProgressBarCircularIndeterminate.setVisibility(View.GONE);
+//            Dialogs.showErrors(getBaseContext(), spiceException);
+        }
+
+        @Override
+        public void onRequestSuccess(ResponseTalks responseTalks) {
+            updateList(responseTalks);
+            mSwipyRefreshLayout.setRefreshing(false);
+            if (mTalksAdapter.getCount() > 20) {
+                mTalksListView.smoothScrollByOffset(3);
+            } else {
+                mProgressBarCircularIndeterminate.setVisibility(View.GONE);
+            }
+        }
+    };
     private ArrayList<Talks_> mTalkList;
     private TalksAdapter mTalksAdapter;
     private ListView mTalksListView;
     private SwipyRefreshLayout mSwipyRefreshLayout;
     private Toolbar mToolbar;
-    ProgressBarCircularIndeterminate mProgressBarCircularIndeterminate;
-
+    // Class from http://stackoverflow.com/
+    private BroadcastReceiver mConnReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+            if (!currentNetworkInfo.isConnected()) {
+                showConnectionIsFailed();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +76,7 @@ public class MainActivity extends AbstractActivity implements Constants {
         this.registerReceiver(this.mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         initUI();
         if (savedInstanceState != null) {
-            mTalkList = (ArrayList<Talks_>) savedInstanceState.getSerializable("put");
+            mTalkList = (ArrayList<Talks_>) savedInstanceState.getSerializable(LIST);
             mProgressBarCircularIndeterminate.setVisibility(View.INVISIBLE);
         }
         setListView();
@@ -67,7 +93,7 @@ public class MainActivity extends AbstractActivity implements Constants {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable("put", mTalkList);
+        outState.putSerializable(LIST, mTalkList);
     }
 
     @Override
@@ -124,7 +150,7 @@ public class MainActivity extends AbstractActivity implements Constants {
                     public void onRequestSuccess(ResponceTalker responceTalker) {
                         mProgressBarCircularIndeterminate.setVisibility(View.GONE);
                         Intent intent = new Intent(MainActivity.this, PlayAcitivity.class);
-                        intent.putExtra("url", responceTalker.getTalk().getMedia().getInternal().get320k().getUri());
+                        intent.putExtra(URI, responceTalker.getTalk().getMedia().getInternal().get320k().getUri());
                         startActivity(intent);
                     }
                 });
@@ -138,7 +164,7 @@ public class MainActivity extends AbstractActivity implements Constants {
     }
 
     private void checkConnection() {
-        if (!(Utils.isNetworkConnectedOrConnecting(this))){
+        if (!(Utils.isNetworkConnectedOrConnecting(this))) {
             showConnectionIsFailed();
 
         }
@@ -156,7 +182,6 @@ public class MainActivity extends AbstractActivity implements Constants {
                     }
                 }).show();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -200,34 +225,5 @@ public class MainActivity extends AbstractActivity implements Constants {
 
         mTalksAdapter.notifyDataSetChanged();
     }
-
-
-    RequestListener<ResponseTalks> mRequestListener = new RequestListener<ResponseTalks>() {
-        @Override
-        public void onRequestFailure(SpiceException spiceException) {
-            mProgressBarCircularIndeterminate.setVisibility(View.GONE);
-//            Dialogs.showErrors(getBaseContext(), spiceException);
-        }
-
-        @Override
-        public void onRequestSuccess(ResponseTalks responseTalks) {
-            updateList(responseTalks);
-            mSwipyRefreshLayout.setRefreshing(false);
-            if (mTalksAdapter.getCount() > 20) {
-                mTalksListView.smoothScrollByOffset(3);
-            } else {
-                mProgressBarCircularIndeterminate.setVisibility(View.GONE);
-            }
-        }
-    };
-   // Class from http://stackoverflow.com/
-    private BroadcastReceiver mConnReceiver = new BroadcastReceiver() {
-        public void onReceive(Context context, Intent intent) {
-             NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-                if(!currentNetworkInfo.isConnected()){
-                showConnectionIsFailed();
-            }
-        }
-    };
 
 }

@@ -11,7 +11,7 @@ import android.widget.VideoView;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 
-public class PlayAcitivity extends ActionBarActivity {
+public class PlayAcitivity extends ActionBarActivity implements Constants {
     VideoView mPlayer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +22,7 @@ public class PlayAcitivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_acitivity);
         mPlayer = (VideoView) findViewById(R.id.player);
-        Uri uri = Uri.parse(getIntent().getStringExtra("url"));
+        Uri uri = Uri.parse(getIntent().getStringExtra(URI));
         playTedVideo(uri);
     }
     private void playTedVideo(Uri uri) {

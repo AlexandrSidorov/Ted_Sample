@@ -10,6 +10,8 @@ public interface Constants {
     public String SORT = "updated_at:desc";
     public String LIMIT = "limit";
     public String OFFSET = "offset";
+    public String LIST = "list";
+    public String URI = "uri";
 
 
 
