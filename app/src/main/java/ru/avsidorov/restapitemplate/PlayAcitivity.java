@@ -35,7 +35,6 @@ public class PlayAcitivity extends ActionBarActivity implements Constants {
         mPlayer.setVideoURI(uri);
         mPlayer.setMediaController(new MediaController(this));
         mPlayer.requestFocus();
-
         mPlayer.start();
     }
 
