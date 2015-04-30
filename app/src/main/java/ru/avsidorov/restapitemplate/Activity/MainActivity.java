@@ -70,7 +70,12 @@ public class MainActivity extends AbstractActivity implements Constants {
         outState.putSerializable("put", mTalkList);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mConnReceiver);
 
+    }
 
     /**
      * Prepare UI for work.
