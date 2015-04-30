@@ -1,7 +1,7 @@
 package ru.avsidorov.restapitemplate.Activity;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.octo.android.robospice.SpiceManager;
 
@@ -9,7 +9,7 @@ import ru.avsidorov.restapitemplate.R;
 import ru.avsidorov.restapitemplate.Service.Service;
 
 
-public class AbstractActivity extends ActionBarActivity {
+public class AbstractActivity extends AppCompatActivity {
     private SpiceManager spiceManager = new SpiceManager(Service.class);
 
     @Override
