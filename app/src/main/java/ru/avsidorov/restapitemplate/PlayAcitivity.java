@@ -13,18 +13,23 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 public class PlayAcitivity extends ActionBarActivity implements Constants {
     VideoView mPlayer;
+    MaterialDialog mMaterialDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_acitivity);
         mPlayer = (VideoView) findViewById(R.id.player);
         Uri uri = Uri.parse(getIntent().getStringExtra(URI));
-        playTedVideo(uri);
+        if (!uri.toString().isEmpty()) {
+            playTedVideo(uri);
+        }
     }
+
     private void playTedVideo(Uri uri) {
 
         mPlayer.setVideoURI(uri);
@@ -37,7 +42,7 @@ public class PlayAcitivity extends ActionBarActivity implements Constants {
     @Override
     public void onBackPressed() {
         mPlayer.pause();
-        new MaterialDialog.Builder(this)
+        mMaterialDialog = new MaterialDialog.Builder(this)
                 .title(R.string.back)
                 .content(R.string.sure_question)
                 .autoDismiss(false)
@@ -59,5 +64,14 @@ public class PlayAcitivity extends ActionBarActivity implements Constants {
                 })
                 .show();
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mMaterialDialog != null) {
+            mMaterialDialog.dismiss();
+
+        }
+        super.onDestroy();
     }
 }

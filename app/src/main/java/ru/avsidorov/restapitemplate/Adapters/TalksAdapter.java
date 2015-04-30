@@ -27,7 +27,7 @@ public class TalksAdapter extends ArrayAdapter<Talks_> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final Talks_ talk = (Talks_) getItem(position);
+        final Talks_ talk = getItem(position);
         View rowView = convertView;
         if (rowView == null) {
             rowView = LayoutInflater.from(getContext()).inflate(R.layout.talks_item, parent, false);

@@ -1,5 +1,6 @@
 package ru.avsidorov.restapitemplate.Activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -9,6 +10,7 @@ import ru.avsidorov.restapitemplate.R;
 import ru.avsidorov.restapitemplate.Service.Service;
 
 
+@SuppressLint("Registered")
 public class AbstractActivity extends AppCompatActivity {
     private SpiceManager spiceManager = new SpiceManager(Service.class);
 

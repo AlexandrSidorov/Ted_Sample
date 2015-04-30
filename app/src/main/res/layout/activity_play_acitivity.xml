@@ -2,14 +2,15 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/black"
                 tools:context="ru.avsidorov.restapitemplate.PlayAcitivity"
-                android:background="@android:color/black">
+                tools:ignore="Overdraw">
 
     <VideoView
+        android:id="@+id/player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/player"
-        android:layout_gravity="center"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"/>
 
 </RelativeLayout>

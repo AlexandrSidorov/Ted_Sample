@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ru.avsidorov.restapitemplate" >
+<manifest
+    package="ru.avsidorov.restapitemplate"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,9 +27,10 @@
         </activity>
         <activity
             android:name=".PlayAcitivity"
-            android:label="@string/title_activity_play_acitivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:parentActivityName=".Activity.MainActivity" >
+            android:label="@string/title_activity_play_acitivity"
+            android:parentActivityName=".Activity.MainActivity"
+            tools:ignore="UnusedAttribute">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ru.avsidorov.restapitemplate.Activity.MainActivity" />

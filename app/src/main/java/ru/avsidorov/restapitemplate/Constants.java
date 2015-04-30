@@ -4,14 +4,14 @@ package ru.avsidorov.restapitemplate;
  * Created by Alexandr Sidorov on 29.04.2015.
  */
 public interface Constants {
-    public String API_KEY = "api-key";
-    public String KEY = "3kknnrwmnuurr2wtqcmp9vuy";
-    public String ORDER = "order";
-    public String SORT = "updated_at:desc";
-    public String LIMIT = "limit";
-    public String OFFSET = "offset";
-    public String LIST = "list";
-    public String URI = "uri";
+    String API_KEY = "api-key";
+    String KEY = "3kknnrwmnuurr2wtqcmp9vuy";
+    String ORDER = "order";
+    String SORT = "updated_at:desc";
+    String LIMIT = "limit";
+    String OFFSET = "offset";
+    String LIST = "list";
+    String URI = "uri";
 
 
 

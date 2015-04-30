@@ -34,8 +34,13 @@ import ru.avsidorov.restapitemplate.PlayAcitivity;
 import ru.avsidorov.restapitemplate.R;
 import ru.avsidorov.restapitemplate.Utils;
 
+@SuppressWarnings("ALL")
 public class MainActivity extends AbstractActivity implements Constants {
     ProgressBarCircularIndeterminate mProgressBarCircularIndeterminate;
+    private ArrayList<Talks_> mTalkList;
+    private TalksAdapter mTalksAdapter;
+    private ListView mTalksListView;
+    private SwipyRefreshLayout mSwipyRefreshLayout;
     RequestListener<ResponseTalks> mRequestListener = new RequestListener<ResponseTalks>() {
         @Override
         public void onRequestFailure(SpiceException spiceException) {
@@ -54,21 +59,17 @@ public class MainActivity extends AbstractActivity implements Constants {
             }
         }
     };
-    private ArrayList<Talks_> mTalkList;
-    private TalksAdapter mTalksAdapter;
-    private ListView mTalksListView;
-    private SwipyRefreshLayout mSwipyRefreshLayout;
-    private Toolbar mToolbar;
     // Class from http://stackoverflow.com/
     private BroadcastReceiver mConnReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
-            NetworkInfo currentNetworkInfo = (NetworkInfo) intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
+            NetworkInfo currentNetworkInfo = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
             if (!currentNetworkInfo.isConnected()) {
                 showConnectionIsFailed();
             }
         }
     };
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +77,9 @@ public class MainActivity extends AbstractActivity implements Constants {
         this.registerReceiver(this.mConnReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         initUI();
         if (savedInstanceState != null) {
+
+
+            //noinspection unchecked
             mTalkList = (ArrayList<Talks_>) savedInstanceState.getSerializable(LIST);
             mProgressBarCircularIndeterminate.setVisibility(View.INVISIBLE);
         }
@@ -84,10 +88,11 @@ public class MainActivity extends AbstractActivity implements Constants {
 
     private void initUI() {
         mProgressBarCircularIndeterminate = (ProgressBarCircularIndeterminate) findViewById(R.id.progressBarInt);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar;
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         mSwipyRefreshLayout = (SwipyRefreshLayout) findViewById(R.id.swipe);
         mTalksListView = (ListView) findViewById(R.id.talksListView);
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -121,7 +126,7 @@ public class MainActivity extends AbstractActivity implements Constants {
 
 
         if (mTalkList == null) {
-            mTalkList = new ArrayList<Talks_>();
+            mTalkList = new ArrayList<>();
             mProgressBarCircularIndeterminate.setVisibility(View.VISIBLE);
             getTEDList(Utils.getQuery(20, 0));
 
@@ -149,16 +154,18 @@ public class MainActivity extends AbstractActivity implements Constants {
                     @Override
                     public void onRequestSuccess(ResponceTalker responceTalker) {
                         mProgressBarCircularIndeterminate.setVisibility(View.GONE);
-                        Intent intent = new Intent(MainActivity.this, PlayAcitivity.class);
-                        intent.putExtra(URI, responceTalker.getTalk().getMedia().getInternal().get320k().getUri());
-                        startActivity(intent);
+                        String tmp = responceTalker.getTalk().getMedia().getInternal().get320k().getUri();
+                        if (!tmp.isEmpty()) {
+                            Intent intent = new Intent(MainActivity.this, PlayAcitivity.class);
+                            intent.putExtra(URI, tmp);
+                            startActivity(intent);
+                        }
                     }
                 });
 
 
             }
         });
-
 
 
     }

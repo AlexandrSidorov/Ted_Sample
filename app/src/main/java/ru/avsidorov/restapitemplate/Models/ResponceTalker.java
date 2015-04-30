@@ -11,11 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResponceTalker {
+    @Expose
+    private Talk talk;
+
 public String getPhoto(){
     return getTalk().getImages().get(0).getImage().getUrl();
 }
-    @Expose
-    private Talk talk;
 
     /**
      *
@@ -2546,7 +2547,7 @@ public String getPhoto(){
         @Expose
         private Event event;
         @Expose
-        private List<Image> images = new ArrayList<Image>();
+        private List<Image> images = new ArrayList<>();
         @SerializedName("image_16x9")
         @Expose
         private Boolean image16x9;
@@ -2555,13 +2556,13 @@ public String getPhoto(){
         @Expose
         private Languages languages;
         @Expose
-        private List<Tag> tags = new ArrayList<Tag>();
+        private List<Tag> tags = new ArrayList<>();
         @Expose
-        private List<Theme> themes = new ArrayList<Theme>();
+        private List<Theme> themes = new ArrayList<>();
         @Expose
-        private List<Speaker> speakers = new ArrayList<Speaker>();
+        private List<Speaker> speakers = new ArrayList<>();
         @Expose
-        private List<Rating> ratings = new ArrayList<Rating>();
+        private List<Rating> ratings = new ArrayList<>();
 
         /**
          *

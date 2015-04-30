@@ -1,12 +1,7 @@
 package ru.avsidorov.restapitemplate.Service;
 
-import android.app.Application;
-
-import com.octo.android.robospice.persistence.CacheManager;
-import com.octo.android.robospice.persistence.exception.CacheCreationException;
 import com.octo.android.robospice.retrofit.RetrofitGsonSpiceService;
 
-import retrofit.converter.Converter;
 import ru.avsidorov.restapitemplate.Api.Api;
 
 /**
@@ -21,18 +16,11 @@ public class Service extends RetrofitGsonSpiceService {
         addRetrofitInterface(Api.class);
     }
 
-    @Override
-    public CacheManager createCacheManager(Application application) throws CacheCreationException {
-        return super.createCacheManager(application);
-    }
 
     @Override
     protected String getServerUrl() {
         return BASE_URL;
     }
 
-    @Override
-    protected Converter createConverter() {
-        return super.createConverter();
-    }
+
 }
